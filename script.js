@@ -1,8 +1,6 @@
-// Canvas & context
 const canvas = document.getElementById('visualizer');
 const ctx = canvas.getContext('2d');
 
-// Resize canvas
 function resizeCanvas() {
   canvas.width = window.innerWidth*0.95;
   canvas.height = 300;
@@ -10,7 +8,6 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// Audio elements
 const audioFile = document.getElementById('audio-file');
 const playBtn = document.getElementById('play');
 const pauseBtn = document.getElementById('pause');
@@ -33,7 +30,6 @@ function initAudio() {
   analyser.connect(audioCtx.destination);
 }
 
-// Event listeners for file input and play/pause buttons
 audioFile.addEventListener('change', e=>{
   const file = e.target.files[0];
   if(!file) return;
@@ -46,12 +42,10 @@ audioFile.addEventListener('change', e=>{
 playBtn.addEventListener('click', ()=> audio.play());
 pauseBtn.addEventListener('click', ()=> audio.pause());
 
-// Sensitivity slider
 sensitivity.addEventListener('input', ()=>{
   sensVal.textContent = sensitivity.value;
 });
 
-// Typing buffer
 let typingBuffer = [];
 codeInput.addEventListener('input', ()=> typingBuffer.push(Date.now()));
 
@@ -83,4 +77,11 @@ function animate() {
 }
 
 animate();
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth*0.95;
+  canvas.height = 300;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
