@@ -55,3 +55,32 @@ sensitivity.addEventListener('input', ()=>{
 let typingBuffer = [];
 codeInput.addEventListener('input', ()=> typingBuffer.push(Date.now()));
 
+function animate() {
+  requestAnimationFrame(animate);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  let avg = 0;
+  if(analyser && dataArray){
+    analyser.getByteFrequencyData(dataArray);
+    let sum = 0;
+    for(let i=0;i<dataArray.length;i++) sum += dataArray[i];
+    avg = sum/dataArray.length/255;
+  }
+
+  const now = Date.now();
+  typingBuffer = typingBuffer.filter(t=> now - t < 1000);
+  const typingIntensity = typingBuffer.length/8;
+  cpsEl.textContent = typingBuffer.length;
+
+  if(dataArray){  
+    const width = canvas.width/dataArray.length;
+    for(let i=0;i<dataArray.length;i++){
+      const h = dataArray[i]/255*canvas.height*avg*(parseFloat(sensitivity.value)+typingIntensity);
+      ctx.fillStyle = `hsl(${i/dataArray.length*360}, 80%, 50%)`;
+      ctx.fillRect(i*width, canvas.height-h, width-1, h);
+    }
+  }
+}
+
+animate();
+
