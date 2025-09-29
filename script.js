@@ -23,3 +23,26 @@ let audio = new Audio();
 audio.crossOrigin = "anonymous";
 let audioCtx, analyser, dataArray;
 
+function initAudio() {
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const source = audioCtx.createMediaElementSource(audio);
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+}
+
+// Event listeners for file input and play/pause buttons
+audioFile.addEventListener('change', e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  audio.src = URL.createObjectURL(file);
+  audio.load();
+  audio.play();
+  initAudio();
+});
+
+playBtn.addEventListener('click', ()=> audio.play());
+pauseBtn.addEventListener('click', ()=> audio.pause());
+
