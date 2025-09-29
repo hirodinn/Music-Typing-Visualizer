@@ -46,3 +46,12 @@ audioFile.addEventListener('change', e=>{
 playBtn.addEventListener('click', ()=> audio.play());
 pauseBtn.addEventListener('click', ()=> audio.pause());
 
+// Sensitivity slider
+sensitivity.addEventListener('input', ()=>{
+  sensVal.textContent = sensitivity.value;
+});
+
+// Typing buffer
+let typingBuffer = [];
+codeInput.addEventListener('input', ()=> typingBuffer.push(Date.now()));
+
